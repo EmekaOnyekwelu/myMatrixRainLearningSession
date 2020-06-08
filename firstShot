@@ -1,0 +1,60 @@
+var coin;
+var stream;
+var coinSize = 30;
+
+function setup() {
+  createCanvas(
+    window.innerWidth,
+    window.innerHeight
+  );
+  background(100);
+  stream = new Stream();
+  stream.generateCoins(); 
+}
+function draw() {
+  background(0);
+  stream.render();
+  }
+  
+function Coin(x, y, speed) {
+  this.x = x;
+  this.y = y;
+  this.value;
+  this.speed = speed;
+  this.switchInterval = round(random(0, 20));
+  this.setToRandomCoin = function() {
+  if (frameCount % this.switchInterval == 0) {
+  this.value = String.fromCharCode(0x3040 + round(random(0, 96)));
+  }
+  this.rain = function() {
+  this.y = (this.y >= window.innerHeight) ? 0 : this.y += this.speed
+  }
+    
+  }
+}
+
+function Stream() {
+  this.coins = [];
+  this.totalCoins = round(random(5, 21));
+  this.speed = random(5, 20);
+  this.generateCoins = function(x, y) {
+  var x = window.innerWidth / 2;
+  var y = 0;
+    for (i = 0; i <= this.totalCoins; i++) {
+  coin = new Coin(x, y, this.speed);
+  coin.setToRandomCoin();
+  this.coins.push(coin);
+  y -= coinSize; 
+    }
+  }
+  this.render = function () {
+    this.coins.forEach(function(coin){
+    text(coin.value, coin.x, coin.y);
+    fill(0, 100, 50);
+    textSize(coinSize);
+    coin.rain();
+    coin.setToRandomCoin();
+    });
+      
+  }
+  }
